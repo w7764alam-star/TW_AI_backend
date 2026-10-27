@@ -6,16 +6,17 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Groq API setup (Ye OpenAI ki tarah hi kaam karta hai)
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-  baseURL: "https://openrouter.ai/api/v1",
+  apiKey: process.env.GROQ_API_KEY,
+  baseURL: "https://api.groq.com/openai/v1",
 });
 
 app.post('/api/chat', async (req, res) => {
   try {
     const { message } = req.body;
     const response = await openai.chat.completions.create({
-      model: "openrouter/free", // Universal free model
+      model: "llama3-8b-8192", // Groq ka super fast model
       messages: [{ role: "user", content: message }],
     });
     res.json({ reply: response.choices[0].message.content });
@@ -35,7 +36,7 @@ app.post('/api/pdf-action', async (req, res) => {
     if (action === 'summarize') prompt = `Summarize this text in 5 bullet points:\n\n${text}`;
 
     const response = await openai.chat.completions.create({
-      model: "openrouter/free",
+      model: "llama3-8b-8192",
       messages: [{ role: "user", content: prompt }],
     });
     res.json({ result: response.choices[0].message.content });
@@ -51,7 +52,7 @@ app.post('/api/study', async (req, res) => {
     const prompt = `Act as a teacher. Create a ${type} for subject ${subject} on topic ${topic}. Keep it clear and helpful.`;
 
     const response = await openai.chat.completions.create({
-      model: "openrouter/free",
+      model: "llama3-8b-8192",
       messages: [{ role: "user", content: prompt }],
     });
     res.json({ result: response.choices[0].message.content });
