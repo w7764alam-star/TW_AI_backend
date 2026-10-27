@@ -6,17 +6,17 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Groq API setup (Ye OpenAI ki tarah hi kaam karta hai)
+// Groq API setup (Key ka naam OPENAI_API_KEY hi rahega taaki Render mein kuch change na karna pade)
 const openai = new OpenAI({
-  apiKey: process.env.GROQ_API_KEY,
-  baseURL: "https://api.groq.com/openai/v1",
+  apiKey: process.env.OPENAI_API_KEY,
+  baseURL: "https://api.groq.com/openai/v1", 
 });
 
 app.post('/api/chat', async (req, res) => {
   try {
     const { message } = req.body;
     const response = await openai.chat.completions.create({
-      model: "llama3-8b-8192", // Groq ka super fast model
+      model: "llama3-8b-8192", 
       messages: [{ role: "user", content: message }],
     });
     res.json({ reply: response.choices[0].message.content });
