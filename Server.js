@@ -15,7 +15,7 @@ app.post('/api/chat', async (req, res) => {
   try {
     const { message } = req.body;
     const response = await openai.chat.completions.create({
-      model: "openrouter/free", // Ye universal free model hai
+      model: "openrouter/free", // Universal free model
       messages: [{ role: "user", content: message }],
     });
     res.json({ reply: response.choices[0].message.content });
